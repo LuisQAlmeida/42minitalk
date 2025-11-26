@@ -1,31 +1,47 @@
-NAME = minitalk.a
-
-SRC = 
-BONUS_SRC = 
-
-OBJ = $(SRC:.c=.o)
-BONUS_OBJ = $(BONUS_SRC:.c=.o)
-
+#******************************************************#
+#			VARIABLES                      #
+#******************************************************#
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-AR = ar rcs
 
-all: $(NAME)
+SERVER_NAME = server
+SERVER_SRC = src/server.c src/utils.c
+SERVER_OBJ = $(SERVER_SRC:.c=.o)
 
-$(NAME): $(OBJ)
-	$(AR) $(NAME) $(OBJ)
+CLIENT_NAME = client
+CLIENT_SRC = src/client.c src/utils.c
+CLIENT_OBJ = $(CLIENT_SRC:.c=.o)
+
+INCLUDES = -Iincludes -Iincludes/Libft
+
+LIBFT_DIR = includes/Libft
+LIBFT = $(LIBFT_DIR)/libft.a
+
+#******************************************************#
+#                       RULES                          #
+#******************************************************#
+all: $(SERVER_NAME) $(CLIENT_NAME)
+
+$(LIBFT):
+	$(MAKE) -C $(LIBFT_DIR)
+
+$(SERVER_NAME): $(SERVER_OBJ) $(LIBFT)
+	$(CC) $(CFLAGS) $(SERVER_OBJ) $(LIBFT) -o $(SERVER_NAME)
+
+$(CLIENT_NAME): $(CLIENT_OBJ) $(LIBFT)
+	$(CC) $(CFLAGS) $(CLIENT_OBJ) $(LIBFT) -o $(CLIENT_NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(OBJ) $(BONUS_OBJ)
+	rm -f $(SERVER_OBJ) $(CLIENT_OBJ)
+	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(SERVER_NAME) $(CLIENT_NAME)
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
-bonus:
-	$(CC) $(CFLAGS) -c $(SRC) $(BONUS_SRC)
-	$(AR) $(NAME) $(OBJ) $(BONUS_OBJ)
+.PHONY: all clean fclean re
