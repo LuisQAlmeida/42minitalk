@@ -9,7 +9,7 @@
 
 */
 
-#include "../includes/Libft/libft.h"
+#include "libft.h"
 #include "minitalk.h"
 
 int	main(void)
@@ -22,6 +22,6 @@ int	main(void)
 		//Find a way to receive each signal.
 		//Find a way to Decrypt signals.
 	}
-	printf("\nServer's PID is %d\n\n", server_pid); //Replace with ft_putnbr. Include Libft library.
+	ft_printf("\nServer's PID is %d\n\n", server_pid);
 	return (0);
 }
