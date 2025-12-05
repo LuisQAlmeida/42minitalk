@@ -1,18 +1,3 @@
-/*CHECKLIST:
-
-- Write a program (main) in which the client takes two parameters/arguments
-	- The PID of the server to which it wants to send the message;
-	- The message;
-- Encrypt the message;
-	- bitwise operations to encrypt and decrypt message??
-- Send the message to the server (via its PID);
-	- Maybe use kill function to send the signals to server.
-- Create a stop condition so that the server knows when it has finished receiving the message;
-	- Maybe the stop condition is signal SIGUSR2 and SIGUSR1 send each char.
-- Error handling and memory leaks handling.
-
-*/
-
 #include "minitalk.h"
 
 int	main(int argc, char **argv)
