@@ -9,7 +9,6 @@
 
 */
 
-#include "libft.h"
 #include "minitalk.h"
 
 int	main(void)
