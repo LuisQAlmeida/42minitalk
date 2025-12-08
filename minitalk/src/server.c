@@ -2,14 +2,9 @@
 
 int	main(void)
 {
-	pid_t	server_pid;
+	ft_printf("Server PID is %d\n", getpid());
 
-	server_pid = getpid();
 	while (1)
-	{
-		//Find a way to receive each signal.
-		//Find a way to Decrypt signals.
-	}
-	ft_printf("\nServer's PID is %d\n\n", server_pid);
+		pause();
 	return (0);
 }
