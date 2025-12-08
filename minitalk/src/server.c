@@ -1,8 +1,8 @@
 #include "minitalk.h"
 
-static void signal_handler(int sig_nbr, siginfo_t *info, void *context)
+static void	signal_handler(int sig_nbr, siginfo_t *info, void *context)
 {
-	static int		bit_idx;
+	static int				bit_idx;
 	static unsigned char	full_char;
 
 	bit_idx = 0;
@@ -19,7 +19,7 @@ static void signal_handler(int sig_nbr, siginfo_t *info, void *context)
 			if (info && info->si_pid != 0)
 			{
 				if (kill(info->si_pid, SIGUSR1) == -1)
-					write(2, "ACK Failed\n", 11);
+					write(2, "Error: ACK Failed\n", 18);
 			}
 		}
 		else
@@ -37,6 +37,9 @@ int	main(void)
 	sigact.sa_flags = SA_SIGINFO;
 	sigact.sa_sigaction = signal_handler;
 	ft_printf("Server PID is %d\n", getpid());
+	if (sigaction(SIGUSR1, &sigact, NULL) == -1
+		|| sigaction(SIGUSR2, &sigact, NULL) == -1)
+		write(2, "Error: Sigaction Failed\n", 24);
 	while (1)
 		pause();
 	return (0);
