@@ -10,7 +10,7 @@ static void	signal_handler(int sig_nbr)
 	bit_idx++;
 	if (bit_idx == 8)
 	{
-		if (full_char == 0)
+		if (full_char == '\0')
 			write(1, "\n", 1);
 		else
 			write(1, &full_char, 1);

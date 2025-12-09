@@ -11,7 +11,7 @@ static void	signal_handler(int sig_nbr, siginfo_t *info, void *context)
 	bit_idx++;
 	if (bit_idx == 8)
 	{
-		if (full_char == 0)
+		if (full_char == '\0')
 		{
 			write(1, "\n", 1);
 			if (info && info->si_pid != 0)
