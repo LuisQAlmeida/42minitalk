@@ -5,8 +5,6 @@ static void	signal_handler(int sig_nbr)
 	static int				bit_idx;
 	static unsigned char	full_char;
 
-	bit_idx = 0;
-	full_char = 0;
 	if (sig_nbr == SIGUSR2)
 		full_char |= (1 << (7 - bit_idx));
 	bit_idx++;
