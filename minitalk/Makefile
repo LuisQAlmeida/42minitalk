@@ -5,12 +5,23 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 SERVER_NAME = server
-SERVER_SRC = src/server.c src/utils.c
-SERVER_OBJ = $(SERVER_SRC:.c=.o)
-
 CLIENT_NAME = client
+
+SERVER_SRC = src/server.c src/utils.c
+SERVER_SRC_BONUS = src/server_bonus.c src/utils.c
 CLIENT_SRC = src/client.c src/utils.c
-CLIENT_OBJ = $(CLIENT_SRC:.c=.o)
+CLIENT_SRC_BONUS = src/client_bonus.c src/utils.c
+
+SERVER_SRC_USED = $(SERVER_SRC)
+CLIENT_SRC_USED = $(CLIENT_SRC)
+
+ifeq ($(BONUS), 1)
+SERVER_SRC_USED = $(SERVER_SRC_BONUS)
+CLIENT_SRC_USED = $(CLIENT_SRC_BONUS)
+endif
+
+SERVER_OBJ = $(SERVER_SRC_USED:.c=.o)
+CLIENT_OBJ = $(CLIENT_SRC_USED:.c=.o)
 
 INCLUDES = -Iincludes -Iincludes/Libft
 
@@ -21,6 +32,9 @@ LIBFT = $(LIBFT_DIR)/libft.a
 #                       RULES                          #
 #******************************************************#
 all: $(SERVER_NAME) $(CLIENT_NAME)
+
+bonus:
+	$(MAKE) BONUS=1 all
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
@@ -44,4 +58,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re
