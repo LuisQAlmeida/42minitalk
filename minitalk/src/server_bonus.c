@@ -17,7 +17,7 @@ static void	signal_handler(int sig_nbr, siginfo_t *info, void *context)
 			if (info && info->si_pid != 0)
 			{
 				if (kill(info->si_pid, SIGUSR1) == -1)
-					write(2, "Error: ACK Failed\n", 18);
+					write(2, "Error: ACK Failed.\n", 19);
 			}
 		}
 		else
@@ -37,7 +37,7 @@ int	main(void)
 	ft_printf("Server PID is %d\n", getpid());
 	if (sigaction(SIGUSR1, &sigact, NULL) == -1
 		|| sigaction(SIGUSR2, &sigact, NULL) == -1)
-		ft_error("Error: Sigaction Failed\n", 3);
+		ft_error("Error: Sigaction Failed.", 5);
 	while (1)
 		pause();
 	return (0);
