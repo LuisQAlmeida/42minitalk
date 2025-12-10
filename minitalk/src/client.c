@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 3)
 		ft_error("Please type: ./client <Server PID> <Message>", 1);
-	if (!valid_pid_format)
+	if (!valid_pid_format(argv[1]))
 		ft_error("Error: Invalid Server PID format.", 2);
 	server_pid = (pid_t)ft_atoi(argv[1]);
 	if (server_pid <= 0)
