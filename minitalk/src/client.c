@@ -7,6 +7,8 @@ int	valid_pid_format(const char *srv_pid)
 	i = 0;
 	if (!srv_pid || !srv_pid[i])
 		return (0);
+	if (srv_pid[i] == '-' && ft_isdigit(srv_pid[i + 1]))
+		i++;
 	while (srv_pid[i] != '\0')
 	{
 		if (!ft_isdigit(srv_pid[i]))
@@ -25,6 +27,7 @@ int	main(int argc, char **argv)
 	if (!valid_pid_format(argv[1]))
 		ft_error("Error: Invalid Server PID format.", 2);
 	server_pid = (pid_t)ft_atoi(argv[1]);
+	ft_printf("Server PID = %d\n", server_pid);
 	if (server_pid <= 0)
 		ft_error("Error: Invalid Server PID value.", 3);
 	/* ------> Function to send message to Server PID here. <------- */
