@@ -8,9 +8,9 @@ SERVER_NAME = server
 CLIENT_NAME = client
 
 SERVER_SRC = src/server.c src/utils.c
-SERVER_SRC_BONUS = src/server_bonus.c src/utils.c
+SERVER_SRC_BONUS = bonus/server_bonus.c src/utils.c
 CLIENT_SRC = src/client.c src/utils.c
-CLIENT_SRC_BONUS = src/client_bonus.c src/utils.c
+CLIENT_SRC_BONUS = bonus/client_bonus.c src/utils.c
 
 SERVER_SRC_USED = $(SERVER_SRC)
 CLIENT_SRC_USED = $(CLIENT_SRC)
