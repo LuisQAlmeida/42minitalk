@@ -1,21 +1,20 @@
 #include "minitalk.h"
 
+static t_server	g_srv;
+
 static void	signal_handler(int sig_nbr)
 {
-	static int				bit_idx;
-	static unsigned char	full_char;
-
 	if (sig_nbr == SIGUSR2)
-		full_char |= (1 << (7 - bit_idx));
-	bit_idx++;
-	if (bit_idx == 8)
+		g_srv.full_char |= (1 << (7 - g_srv.bit_idx));
+	g_srv.bit_idx++;
+	if (g_srv.bit_idx == 8)
 	{
-		if (full_char == '\0')
+		if (g_srv.full_char == '\0')
 			write(1, "\n", 1);
 		else
-			write(1, &full_char, 1);
-		bit_idx = 0;
-		full_char = 0;
+			write(1, &g_srv.full_char, 1);
+		g_srv.bit_idx = 0;
+		g_srv.full_char = 0;
 	}
 }
 
