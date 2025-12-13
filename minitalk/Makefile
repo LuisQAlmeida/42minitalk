@@ -26,9 +26,9 @@ CLIENT_OBJ_USED = $(CLIENT_SRC_USED:.c=.o)
 SERVER_OBJ_ALL = $(SERVER_SRC:.c=.o) $(SERVER_SRC_BONUS:.c=.o)
 CLIENT_OBJ_ALL = $(CLIENT_SRC:.c=.o) $(CLIENT_SRC_BONUS:.c=.o)
 
-INCLUDES = -Iincludes -Iincludes/Libft
+INCLUDE = -Iinclude -Iinclude/Libft
 
-LIBFT_DIR = includes/Libft
+LIBFT_DIR = include/Libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 #******************************************************#
@@ -49,7 +49,7 @@ $(CLIENT_NAME): $(CLIENT_OBJ_USED) $(LIBFT)
 	$(CC) $(CFLAGS) $(CLIENT_OBJ_USED) $(LIBFT) -o $(CLIENT_NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
 	rm -f $(SERVER_OBJ_ALL) $(CLIENT_OBJ_ALL)

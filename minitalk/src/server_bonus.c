@@ -32,6 +32,8 @@ int	main(void)
 	struct sigaction	sigact;
 
 	sigemptyset(&sigact.sa_mask);
+	sigaddset(&sigact.sa_mask, SIGUSR1);
+	sigaddset(&sigact.sa_mask, SIGUSR2);
 	sigact.sa_flags = SA_SIGINFO;
 	sigact.sa_sigaction = signal_handler;
 	ft_printf("Server PID is %d\n", getpid());
