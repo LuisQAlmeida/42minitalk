@@ -7,8 +7,6 @@ int	valid_pid_format(const char *srv_pid)
 	i = 0;
 	if (!srv_pid || !srv_pid[i])
 		return (0);
-	if (srv_pid[i] == '-' && ft_isdigit(srv_pid[i + 1]))
-		i++;
 	while (srv_pid[i] != '\0')
 	{
 		if (!ft_isdigit(srv_pid[i]))
