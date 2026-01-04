@@ -38,7 +38,7 @@ int	main(void)
 	ft_printf("Server PID is %d\n", getpid());
 	if (sigaction(SIGUSR1, &sigact, NULL) == -1
 		|| sigaction(SIGUSR2, &sigact, NULL) == -1)
-		ft_error("Error: Sigaction Failed.", 5);
+		ft_error("Error: Sigaction Failed.", 4);
 	while (1)
 		pause();
 	return (0);

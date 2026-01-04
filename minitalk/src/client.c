@@ -26,12 +26,12 @@ static void	send_char(pid_t srv_pid, unsigned char c)
 		if ((c >> bit_idx) & 1)
 		{
 			if (kill(srv_pid, SIGUSR2) == -1)
-				ft_error("Error: Failed To Send Signal.", 4);
+				ft_error("Error: Failed To Send Signal.", 3);
 		}
 		else
 		{
 			if (kill(srv_pid, SIGUSR1) == -1)
-				ft_error("Error: Failed To Send Signal.", 4);
+				ft_error("Error: Failed To Send Signal.", 3);
 		}
 		usleep(100);
 		bit_idx--;
@@ -63,7 +63,7 @@ int	main(int argc, char **argv)
 		ft_error("Error: Invalid Server PID format.", 2);
 	server_pid = (pid_t)ft_atoi(argv[1]);
 	if (server_pid <= 0)
-		ft_error("Error: Invalid Server PID value.", 3);
+		ft_error("Error: Invalid Server PID format.", 2);
 	send_msg(server_pid, argv[2]);
 	return (0);
 }
