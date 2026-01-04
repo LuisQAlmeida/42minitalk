@@ -1,5 +1,13 @@
 #include "minitalk.h"
 
+static t_client	g_clt;
+
+static void	ack_handler(int sig)
+{
+	(void)sig;
+	g_clt.ack_received = 1;
+}
+
 static int	valid_pid_format(const char *srv_pid)
 {
 	int	i;
@@ -53,7 +61,8 @@ static void	send_msg(pid_t srv_pid, const char *msg)
 
 int	main(int argc, char **argv)
 {
-	pid_t	server_pid;
+	pid_t			server_pid;
+	struct sigaction	sigact;
 
 	if (argc != 3)
 		ft_error("Please type: ./client <Server PID> <Message>", 1);
@@ -62,6 +71,15 @@ int	main(int argc, char **argv)
 	server_pid = (pid_t)ft_atoi(argv[1]);
 	if (server_pid <= 0)
 		ft_error("Error: Invalid Server PID value.", 3);
+	g_clt.ack_received = 0;
+	sigemptyset(&sigact.sa_mask);
+	sigact.sa_flags = 0;
+	sigact.sa_handler = ack_handler;
+	if (sigaction(SIGUSR1, &sigact, NULL) == -1)
+		ft_error("Error: Sigaction Failed.", 5);
 	send_msg(server_pid, argv[2]);
+	while (!g_clt.ack_received)
+		pause();
+	ft_printf("Message delivered to server.\n");
 	return (0);
 }
