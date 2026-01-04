@@ -63,7 +63,7 @@ static void	send_msg(pid_t srv_pid, const char *msg)
 
 int	main(int argc, char **argv)
 {
-	pid_t			server_pid;
+	pid_t				server_pid;
 	struct sigaction	sigact;
 
 	if (argc != 3)
