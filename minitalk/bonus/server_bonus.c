@@ -2,15 +2,23 @@
 
 static t_server	g_srv;
 
-static void	signal_handler(int sig_nbr)
+static void	signal_handler(int sig_nbr, siginfo_t *info, void *context)
 {
+	(void)context;
 	if (sig_nbr == SIGUSR2)
 		g_srv.full_char |= (1 << (7 - g_srv.bit_idx));
 	g_srv.bit_idx++;
 	if (g_srv.bit_idx == 8)
 	{
 		if (g_srv.full_char == '\0')
+		{
 			write(1, "\n", 1);
+			if (info && info->si_pid != 0)
+			{
+				if (kill(info->si_pid, SIGUSR1) == -1)
+					write(2, "Error: ACK Failed\n", 18);
+			}
+		}
 		else
 			write(1, &g_srv.full_char, 1);
 		g_srv.bit_idx = 0;
