@@ -51,6 +51,8 @@ static void	send_msg(pid_t srv_pid, const char *msg)
 	int	i;
 
 	i = 0;
+	if (!msg)
+		return ;
 	while (msg[i] != '\0')
 	{
 		send_char(srv_pid, (unsigned char)msg[i]);
