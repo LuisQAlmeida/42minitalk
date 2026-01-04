@@ -12,6 +12,11 @@ typedef struct s_server
 	unsigned char	full_char;
 }	t_server;
 
+typedef struct s_client
+{
+	volatile sig_atomic_t	ack_received;
+}	t_client;
+
 void	ft_error(const char *error_msg, int error_nbr);
 
 #endif
