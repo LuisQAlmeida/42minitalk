@@ -1,6 +1,6 @@
 #include "minitalk.h"
 
-int	valid_pid_format(const char *srv_pid)
+static int	valid_pid_format(const char *srv_pid)
 {
 	int	i;
 
@@ -9,7 +9,7 @@ int	valid_pid_format(const char *srv_pid)
 		return (0);
 	while (srv_pid[i] != '\0')
 	{
-		if (!ft_isdigit(srv_pid[i]))
+		if (!ft_isdigit((unsigned char)srv_pid[i]))
 			return (0);
 		i++;
 	}
