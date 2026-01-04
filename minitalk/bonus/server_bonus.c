@@ -25,8 +25,8 @@ int	main(void)
 	sigemptyset(&sigact.sa_mask);
 	sigaddset(&sigact.sa_mask, SIGUSR1);
 	sigaddset(&sigact.sa_mask, SIGUSR2);
-	sigact.sa_flags = 0;
-	sigact.sa_handler = signal_handler;
+	sigact.sa_flags = SA_SIGINFO;
+	sigact.sa_sigaction = signal_handler;
 	ft_printf("Server PID is %d\n", getpid());
 	if (sigaction(SIGUSR1, &sigact, NULL) == -1
 		|| sigaction(SIGUSR2, &sigact, NULL) == -1)
