@@ -8,8 +8,9 @@
 
 typedef struct s_server
 {
-	int				bit_idx;
-	unsigned char	full_char;
+	int						bit_idx;
+	unsigned char			full_char;
+	volatile sig_atomic_t	full_char_ready;
 }	t_server;
 
 typedef struct s_client
