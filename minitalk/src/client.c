@@ -33,7 +33,7 @@ static void	send_char(pid_t srv_pid, unsigned char c)
 			if (kill(srv_pid, SIGUSR1) == -1)
 				ft_error("Error: Failed To Send Signal.", 3);
 		}
-		usleep(100);
+		usleep(350);
 		bit_idx--;
 	}
 }
