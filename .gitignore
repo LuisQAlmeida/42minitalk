@@ -90,3 +90,7 @@ dkms.conf
 
 # Project-local build state
 /minitalk/.build-state/
+
+# Minitalk generated executables
+/minitalk/server
+/minitalk/client

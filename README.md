@@ -21,29 +21,86 @@ The project aims to deepen understanding of:
 
 ---
 
+## Dependency Management
+
+The maintained portfolio version uses
+[42Libft](https://github.com/LuisQAlmeida/42Libft) as an external Git
+dependency instead of keeping a duplicated Libft source tree inside this
+repository.
+
+The dependency is stored as a Git submodule at:
+
+    external/libft
+
+Minitalk is pinned to the exact Libft revision:
+
+    890089c0d12a29874e3a92facd92f9f455d1ff1c
+
+This means a given Minitalk commit resolves to a specific Libft source state
+rather than implicitly following the latest remote `main` branch.
+
+The Minitalk build uses Libft through its public boundary:
+
+- `external/libft/libft/libft.h`;
+- `external/libft/libft/libft.a`;
+- Libft's own `Makefile`.
+
+Minitalk does not depend on individual Libft implementation files.
+
+### Clone with dependencies
+
+The recommended clone command is:
+
+    git clone --recurse-submodules https://github.com/LuisQAlmeida/42minitalk.git
+
+For an existing clone whose submodule has not yet been initialized:
+
+    git submodule update --init --recursive
+
+If Libft is missing, the Minitalk Makefile stops before compilation and prints
+the initialization command rather than failing later on a missing header.
+
+Once initialized, normal builds are local and do not require fetching a moving
+dependency revision.
+
+### Historical project state
+
+The original project bundled its Libft implementation directly inside the
+Minitalk repository.
+
+That exact pre-modernization state remains preserved at:
+
+    portfolio-baseline-2026-09
+
+External dependency management is post-baseline portfolio maintenance and does
+not rewrite the historical submission.
+
 ## Instructions
 
 ### 1. Repository structure
 
 ```text
-minitalk/
-├── Makefile
-├── include/
-│   ├── minitalk.h          # Mandatory header
-│   └── minitalk_bonus.h    # Bonus header
-├── src/
-│   ├── client.c            # Mandatory client
-│   ├── server.c            # Mandatory server
-│   └── utils.c             # Error handling (ft_error)
-├── bonus/
-│   ├── client_bonus.c      # Bonus client (ACK support)
-│   └── server_bonus.c      # Bonus server (ACK support)
-└── libft/
-    ├── libft.a             # Static library (built by its own Makefile)
-    └── ...
+42minitalk/
+├── .gitmodules
+├── external/
+│   └── libft/                  # Pinned 42Libft Git submodule
+├── minitalk/
+│   ├── Makefile
+│   ├── include/
+│   │   ├── minitalk.h          # Mandatory header
+│   │   └── minitalk_bonus.h    # Bonus header
+│   ├── src/
+│   │   ├── client.c            # Mandatory client
+│   │   ├── server.c            # Mandatory server
+│   │   └── utils.c             # Error handling
+│   └── bonus/
+│       ├── client_bonus.c      # Bonus client
+│       └── server_bonus.c      # Bonus server with delivery ACK
+└── README.md
 ```
 
-The project depends on a working `libft` in the `libft/` directory, with its own `Makefile` producing `libft.a`.
+Libft is maintained separately and consumed through the pinned
+`external/libft` Git submodule.
 
 ---
 
@@ -59,10 +116,11 @@ make
 
 This will:
 
-- Build `libft` using `make -C libft`.
-- Compile and link:
-  - `src/server.c` + `src/utils.c` + `libft.a` → `server`
-  - `src/client.c` + `src/utils.c` + `libft.a` → `client`
+- validate that the pinned Libft submodule is initialized;
+- build Libft through its own Makefile under `../external/libft/libft`;
+- compile and link:
+  - `src/server.c` + `src/utils.c` + `libft.a` → `server`;
+  - `src/client.c` + `src/utils.c` + `libft.a` → `client`.
 
 Compilation flags:
 
@@ -84,9 +142,9 @@ This recompiles `server` and `client` using the bonus sources:
 #### Cleaning
 
 ```bash
-make clean     # Remove object files (mandatory + bonus)
-make fclean    # clean + remove server/client and libft.a
-make re        # fclean + make
+make clean     # Remove Minitalk and Libft object files
+make fclean    # clean + remove server/client and external libft.a
+make re        # fclean + rebuild the mandatory version
 ```
 
 ---

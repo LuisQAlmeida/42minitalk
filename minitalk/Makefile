@@ -35,10 +35,11 @@ CLIENT_OBJ_USED = $(CLIENT_SRC_USED:.c=.o)
 SERVER_OBJ_ALL = $(SERVER_SRC:.c=.o) $(SERVER_SRC_BONUS:.c=.o)
 CLIENT_OBJ_ALL = $(CLIENT_SRC:.c=.o) $(CLIENT_SRC_BONUS:.c=.o)
 
-INCLUDE = -Iinclude -Ilibft
-
-LIBFT_DIR = libft
+LIBFT_REPO_DIR = ../external/libft
+LIBFT_DIR = $(LIBFT_REPO_DIR)/libft
 LIBFT = $(LIBFT_DIR)/libft.a
+
+INCLUDE = -Iinclude -I$(LIBFT_DIR)
 
 # **************************************************************************** #
 # ****************************** RULES: ************************************** #
@@ -55,7 +56,14 @@ $(MODE_STAMP): | $(BUILD_STATE_DIR)
 	rm -f $(OTHER_MODE_STAMP)
 	touch $(MODE_STAMP)
 
-$(LIBFT):
+check-libft:
+	@if [ ! -f "$(LIBFT_DIR)/Makefile" ]; then \
+		echo "Error: Libft submodule is not initialized."; \
+		echo "Run: git submodule update --init --recursive"; \
+		exit 1; \
+	fi
+
+$(LIBFT): | check-libft
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(SERVER_NAME): $(SERVER_OBJ_USED) $(LIBFT) $(MODE_STAMP)
@@ -64,7 +72,7 @@ $(SERVER_NAME): $(SERVER_OBJ_USED) $(LIBFT) $(MODE_STAMP)
 $(CLIENT_NAME): $(CLIENT_OBJ_USED) $(LIBFT) $(MODE_STAMP)
 	$(CC) $(CFLAGS) $(CLIENT_OBJ_USED) $(LIBFT) -o $(CLIENT_NAME)
 
-%.o: %.c
+%.o: %.c | check-libft
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
@@ -78,4 +86,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all bonus clean fclean re check-libft
