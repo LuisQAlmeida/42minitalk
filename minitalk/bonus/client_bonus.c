@@ -70,7 +70,8 @@ int	main(int argc, char **argv)
 	struct sigaction	sigact;
 	sigset_t			block_mask;
 	sigset_t			old_mask;
-	sigset_t			wait_mask;
+	sigset_t			bit_wait_mask;
+	sigset_t			ack_wait_mask;
 
 	if (argc != 3)
 		ft_error("Please type: ./client <Server PID> <Message>", 1);
@@ -81,22 +82,27 @@ int	main(int argc, char **argv)
 		ft_error("Error: Invalid Server PID format.", 2);
 	g_clt.ack_received = 0;
 	sigemptyset(&block_mask);
+	sigaddset(&block_mask, SIGUSR1);
 	sigaddset(&block_mask, SIGUSR2);
 	if (sigprocmask(SIG_BLOCK, &block_mask, &old_mask) == -1)
 		ft_error("Error: Signal Mask Failed.", 4);
-	wait_mask = old_mask;
-	sigdelset(&wait_mask, SIGUSR2);
+	bit_wait_mask = old_mask;
+	sigaddset(&bit_wait_mask, SIGUSR1);
+	sigdelset(&bit_wait_mask, SIGUSR2);
+	ack_wait_mask = old_mask;
+	sigaddset(&ack_wait_mask, SIGUSR2);
+	sigdelset(&ack_wait_mask, SIGUSR1);
 	sigemptyset(&sigact.sa_mask);
 	sigact.sa_flags = 0;
 	sigact.sa_handler = ack_handler;
 	if (sigaction(SIGUSR1, &sigact, NULL) == -1
 		|| sigaction(SIGUSR2, &sigact, NULL) == -1)
 		ft_error("Error: Sigaction Failed.", 4);
-	send_msg(server_pid, argv[2], &wait_mask);
+	send_msg(server_pid, argv[2], &bit_wait_mask);
+	while (!g_clt.ack_received)
+		sigsuspend(&ack_wait_mask);
 	if (sigprocmask(SIG_SETMASK, &old_mask, NULL) == -1)
 		ft_error("Error: Signal Mask Failed.", 4);
-	while (!g_clt.ack_received)
-		pause();
 	ft_printf("Message delivered to server.\n");
 	return (0);
 }
