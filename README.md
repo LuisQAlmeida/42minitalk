@@ -201,7 +201,7 @@ With the bonus compiled (`make bonus`):
 - The **bonus client**:
   - Installs a handler for `SIGUSR1`.
   - Sends the message as in the mandatory part.
-  - Waits in a loop using `pause()` until it receives the ACK.
+  - Waits using `sigsuspend()` until it receives the delivery ACK.
   - Prints a confirmation, e.g. `Message delivered to server.`
 
 Usage is the same:
@@ -238,6 +238,47 @@ possibly lost:   0 bytes
 
 ---
 
+
+## Continuous Integration
+
+The maintained portfolio version includes automated validation through
+GitHub Actions.
+
+CI runs on pull requests targeting `main` and on pushes to `main`.
+
+The workflow validates three areas:
+
+- **Build and repository validation**
+  - initializes Git submodules recursively;
+  - verifies that Libft resolves to the revision recorded by this repository;
+  - verifies that the historical bundled `minitalk/libft/` directory is absent;
+  - builds mandatory and bonus variants;
+  - validates mandatory-to-bonus and bonus-to-mandatory switching;
+  - validates `clean`, `fclean`, and `re`;
+  - checks repository and submodule cleanliness.
+
+- **Compiler diversity**
+  - builds mandatory and bonus variants with Clang in addition to the
+    reference `cc` build.
+
+- **Runtime regression validation**
+  - runs `tests/regression.sh`;
+  - exercises real client/server communication;
+  - validates empty messages and sequential transfers;
+  - validates bonus delivery acknowledgement;
+  - uses bounded timeouts so synchronization regressions cannot hang CI.
+
+The GitHub Actions runner currently uses Ubuntu 24.04 as the reference
+automation environment. This identifies the environment used for automated
+validation and is not intended to restrict the project to that operating
+system.
+
+The runtime regression suite can also be executed locally from the repository
+root with:
+
+    ./tests/regression.sh
+
+
 ## Resources
 
 ### Documentation & references
@@ -245,7 +286,7 @@ possibly lost:   0 bytes
 - `man 2 kill` – send signals to processes.
 - `man 2 sigaction` – examine and change a signal action.
 - `man 7 signal` – overview of signals.
-- `man 2 pause` – wait for a signal.
+- `man 2 sigsuspend` – atomically wait for a signal with a temporary mask.
 - 42 subject PDF for **minitalk**.
 - 42 **libft** project subject for the custom library used in this project.
 
@@ -253,7 +294,7 @@ These references cover:
 
 - How to send and handle signals (`SIGUSR1`, `SIGUSR2`).
 - How to safely use `sigaction` (including `SA_SIGINFO`).
-- How to correctly use blocking calls like `pause()` in an event-driven context.
+- How to use `sigsuspend()` for race-safe signal waiting with controlled signal masks.
 - How to implement and reuse your own C library (`libft`).
 
 ### Use of AI in this project
