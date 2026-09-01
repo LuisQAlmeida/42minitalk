@@ -80,24 +80,27 @@ not rewrite the historical submission.
 ### 1. Repository structure
 
 ```text
-minitalk/
-├── Makefile
-├── include/
-│   ├── minitalk.h          # Mandatory header
-│   └── minitalk_bonus.h    # Bonus header
-├── src/
-│   ├── client.c            # Mandatory client
-│   ├── server.c            # Mandatory server
-│   └── utils.c             # Error handling (ft_error)
-├── bonus/
-│   ├── client_bonus.c      # Bonus client (ACK support)
-│   └── server_bonus.c      # Bonus server (ACK support)
-└── libft/
-    ├── libft.a             # Static library (built by its own Makefile)
-    └── ...
+42minitalk/
+├── .gitmodules
+├── external/
+│   └── libft/                  # Pinned 42Libft Git submodule
+├── minitalk/
+│   ├── Makefile
+│   ├── include/
+│   │   ├── minitalk.h          # Mandatory header
+│   │   └── minitalk_bonus.h    # Bonus header
+│   ├── src/
+│   │   ├── client.c            # Mandatory client
+│   │   ├── server.c            # Mandatory server
+│   │   └── utils.c             # Error handling
+│   └── bonus/
+│       ├── client_bonus.c      # Bonus client
+│       └── server_bonus.c      # Bonus server with delivery ACK
+└── README.md
 ```
 
-The project depends on a working `libft` in the `libft/` directory, with its own `Makefile` producing `libft.a`.
+Libft is maintained separately and consumed through the pinned
+`external/libft` Git submodule.
 
 ---
 
@@ -113,10 +116,11 @@ make
 
 This will:
 
-- Build `libft` using `make -C libft`.
-- Compile and link:
-  - `src/server.c` + `src/utils.c` + `libft.a` → `server`
-  - `src/client.c` + `src/utils.c` + `libft.a` → `client`
+- validate that the pinned Libft submodule is initialized;
+- build Libft through its own Makefile under `../external/libft/libft`;
+- compile and link:
+  - `src/server.c` + `src/utils.c` + `libft.a` → `server`;
+  - `src/client.c` + `src/utils.c` + `libft.a` → `client`.
 
 Compilation flags:
 
@@ -138,9 +142,9 @@ This recompiles `server` and `client` using the bonus sources:
 #### Cleaning
 
 ```bash
-make clean     # Remove object files (mandatory + bonus)
-make fclean    # clean + remove server/client and libft.a
-make re        # fclean + make
+make clean     # Remove Minitalk and Libft object files
+make fclean    # clean + remove server/client and external libft.a
+make re        # fclean + rebuild the mandatory version
 ```
 
 ---
