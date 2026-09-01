@@ -1,0 +1,170 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and repository validation
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Verify pinned Libft dependency
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          expected=$(git ls-tree HEAD external/libft | awk '{print $3}')
+          actual=$(git -C external/libft rev-parse HEAD)
+
+          echo "superproject pin: $expected"
+          echo "submodule HEAD:   $actual"
+
+          test -n "$expected"
+          test "$expected" = "$actual"
+          test -f external/libft/libft/Makefile
+          test -f external/libft/libft/libft.h
+          test ! -d minitalk/libft
+
+      - name: Check patch whitespace
+        run: git diff --check
+
+      - name: Mandatory clean build
+        shell: bash
+        run: |
+          set -euo pipefail
+          make -C minitalk fclean
+          make -C minitalk
+
+      - name: Bonus clean build
+        shell: bash
+        run: |
+          set -euo pipefail
+          make -C minitalk fclean
+          make -C minitalk bonus
+
+      - name: Validate mandatory to bonus switching
+        shell: bash
+        run: |
+          set -euo pipefail
+          make -C minitalk fclean
+          make -C minitalk
+          make -C minitalk bonus
+          test -f minitalk/.build-state/bonus
+          test ! -f minitalk/.build-state/mandatory
+
+      - name: Validate bonus to mandatory switching
+        shell: bash
+        run: |
+          set -euo pipefail
+          make -C minitalk fclean
+          make -C minitalk bonus
+          make -C minitalk
+          test -f minitalk/.build-state/mandatory
+          test ! -f minitalk/.build-state/bonus
+
+      - name: Validate clean then build
+        shell: bash
+        run: |
+          set -euo pipefail
+          make -C minitalk clean
+          make -C minitalk
+
+      - name: Validate fclean then re
+        shell: bash
+        run: |
+          set -euo pipefail
+          make -C minitalk fclean
+          make -C minitalk re
+
+      - name: Verify repository cleanliness after build
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          super_status=$(git status --porcelain)
+          submodule_status=$(git -C external/libft status --porcelain)
+
+          if [ -n "$super_status" ]; then
+            echo "Superproject is dirty:"
+            printf '%s\n' "$super_status"
+            exit 1
+          fi
+
+          if [ -n "$submodule_status" ]; then
+            echo "Libft submodule is dirty:"
+            printf '%s\n' "$submodule_status"
+            exit 1
+          fi
+
+      - name: Clean generated artifacts
+        run: make -C minitalk fclean
+
+      - name: Verify repository cleanliness after fclean
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git status --porcelain)"
+          test -z "$(git -C external/libft status --porcelain)"
+
+  clang:
+    name: Clang compiler validation
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Mandatory Clang build
+        shell: bash
+        run: |
+          set -euo pipefail
+          make -C minitalk fclean
+          make -C minitalk CC=clang
+
+      - name: Bonus Clang build
+        shell: bash
+        run: |
+          set -euo pipefail
+          make -C minitalk fclean
+          make -C minitalk CC=clang bonus
+
+      - name: Clean
+        run: make -C minitalk fclean
+
+  runtime:
+    name: Runtime regression validation
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Run bounded regression suite
+        shell: bash
+        run: timeout 30s ./tests/regression.sh
+
+      - name: Verify repository cleanliness
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git status --porcelain)"
+          test -z "$(git -C external/libft status --porcelain)"
