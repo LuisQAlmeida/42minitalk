@@ -9,13 +9,15 @@
 typedef struct s_server
 {
 	int						bit_idx;
-	pid_t					client_pid;
 	unsigned char			full_char;
-	volatile sig_atomic_t	full_char_ready;
+	volatile sig_atomic_t	signal_nbr;
+	volatile sig_atomic_t	client_pid;
+	volatile sig_atomic_t	signal_ready;
 }	t_server;
 
 typedef struct s_client
 {
+	volatile sig_atomic_t	bit_ack_received;
 	volatile sig_atomic_t	ack_received;
 }	t_client;
 
