@@ -21,6 +21,60 @@ The project aims to deepen understanding of:
 
 ---
 
+## Dependency Management
+
+The maintained portfolio version uses
+[42Libft](https://github.com/LuisQAlmeida/42Libft) as an external Git
+dependency instead of keeping a duplicated Libft source tree inside this
+repository.
+
+The dependency is stored as a Git submodule at:
+
+    external/libft
+
+Minitalk is pinned to the exact Libft revision:
+
+    890089c0d12a29874e3a92facd92f9f455d1ff1c
+
+This means a given Minitalk commit resolves to a specific Libft source state
+rather than implicitly following the latest remote `main` branch.
+
+The Minitalk build uses Libft through its public boundary:
+
+- `external/libft/libft/libft.h`;
+- `external/libft/libft/libft.a`;
+- Libft's own `Makefile`.
+
+Minitalk does not depend on individual Libft implementation files.
+
+### Clone with dependencies
+
+The recommended clone command is:
+
+    git clone --recurse-submodules https://github.com/LuisQAlmeida/42minitalk.git
+
+For an existing clone whose submodule has not yet been initialized:
+
+    git submodule update --init --recursive
+
+If Libft is missing, the Minitalk Makefile stops before compilation and prints
+the initialization command rather than failing later on a missing header.
+
+Once initialized, normal builds are local and do not require fetching a moving
+dependency revision.
+
+### Historical project state
+
+The original project bundled its Libft implementation directly inside the
+Minitalk repository.
+
+That exact pre-modernization state remains preserved at:
+
+    portfolio-baseline-2026-09
+
+External dependency management is post-baseline portfolio maintenance and does
+not rewrite the historical submission.
+
 ## Instructions
 
 ### 1. Repository structure
