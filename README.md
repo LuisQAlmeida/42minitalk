@@ -299,22 +299,27 @@ These references cover:
 
 ### Use of AI in this project
 
-AI (ChatGPT from OpenAI) was used in the following ways:
+AI tools, primarily ChatGPT from OpenAI, were used as supporting tools during
+both the original learning process and the later portfolio-maintenance phase.
 
-- **Concept clarification**
-  - Understanding the behavior and differences between `signal` and `sigaction`.
-  - Reviewing how to correctly interpret `siginfo_t` and `SA_SIGINFO`.
-  - Discussing safe patterns for using global state with signal handlers.
+During the project and its documentation, AI assistance included:
 
-- **Design and structure**
-  - Refining the overall architecture of the client–server protocol using signals.
-  - Structuring the use of a single global `t_server` per server program and a single global `t_client` for the bonus client.
+- concept clarification around UNIX signals, `sigaction`, `siginfo_t`,
+  signal masks, and synchronization;
+- architecture and implementation review;
+- README organization and technical documentation.
 
-- **README drafting**
-  - Helping draft and organize this `README.md` according to the subject’s rules:
-    - Required sections (“Description”, “Instructions”, “Resources”).
-    - Clear explanation of usage and behavior for both mandatory and bonus parts.
-    - Explicit documentation of how AI was used.
+During post-baseline portfolio maintenance, AI assistance also included:
 
-All final code was written, read, and understood by the author.
-AI was used as a tool for explanation, feedback, and drafting, not as a replacement for understanding or decision-making.
+- reviewing synchronization and build-system behavior;
+- proposing dependency-management changes;
+- drafting regression-test and CI infrastructure;
+- drafting shell commands and audit procedures;
+- reviewing and updating documentation and release material.
+
+All AI-assisted changes were reviewed, executed, tested, and accepted by the
+repository maintainer before integration.
+
+The original pre-modernization repository state is preserved independently at
+`portfolio-baseline-2026-09`, while subsequent Git history records the
+maintained changes separately.
