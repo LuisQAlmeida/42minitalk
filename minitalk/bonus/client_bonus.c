@@ -4,8 +4,10 @@ static t_client	g_clt;
 
 static void	ack_handler(int sig)
 {
-	(void)sig;
-	g_clt.ack_received = 1;
+	if (sig == SIGUSR2)
+		g_clt.bit_ack_received = 1;
+	else if (sig == SIGUSR1)
+		g_clt.ack_received = 1;
 }
 
 static int	valid_pid_format(const char *srv_pid)
@@ -24,29 +26,30 @@ static int	valid_pid_format(const char *srv_pid)
 	return (1);
 }
 
-static void	send_char(pid_t srv_pid, unsigned char c)
+static void	send_char(pid_t srv_pid, unsigned char c,
+		const sigset_t *wait_mask)
 {
 	int	bit_idx;
+	int	sig;
 
 	bit_idx = 7;
 	while (bit_idx >= 0)
 	{
 		if ((c >> bit_idx) & 1)
-		{
-			if (kill(srv_pid, SIGUSR2) == -1)
-				ft_error("Error: Failed To Send Signal.", 3);
-		}
+			sig = SIGUSR2;
 		else
-		{
-			if (kill(srv_pid, SIGUSR1) == -1)
-				ft_error("Error: Failed To Send Signal.", 3);
-		}
-		usleep(350);
+			sig = SIGUSR1;
+		g_clt.bit_ack_received = 0;
+		if (kill(srv_pid, sig) == -1)
+			ft_error("Error: Failed To Send Signal.", 3);
+		while (!g_clt.bit_ack_received)
+			sigsuspend(wait_mask);
 		bit_idx--;
 	}
 }
 
-static void	send_msg(pid_t srv_pid, const char *msg)
+static void	send_msg(pid_t srv_pid, const char *msg,
+		const sigset_t *wait_mask)
 {
 	int	i;
 
@@ -55,16 +58,19 @@ static void	send_msg(pid_t srv_pid, const char *msg)
 		return ;
 	while (msg[i] != '\0')
 	{
-		send_char(srv_pid, (unsigned char)msg[i]);
+		send_char(srv_pid, (unsigned char)msg[i], wait_mask);
 		i++;
 	}
-	send_char(srv_pid, '\0');
+	send_char(srv_pid, '\0', wait_mask);
 }
 
 int	main(int argc, char **argv)
 {
 	pid_t				server_pid;
 	struct sigaction	sigact;
+	sigset_t			block_mask;
+	sigset_t			old_mask;
+	sigset_t			wait_mask;
 
 	if (argc != 3)
 		ft_error("Please type: ./client <Server PID> <Message>", 1);
@@ -74,12 +80,21 @@ int	main(int argc, char **argv)
 	if (server_pid <= 0)
 		ft_error("Error: Invalid Server PID format.", 2);
 	g_clt.ack_received = 0;
+	sigemptyset(&block_mask);
+	sigaddset(&block_mask, SIGUSR2);
+	if (sigprocmask(SIG_BLOCK, &block_mask, &old_mask) == -1)
+		ft_error("Error: Signal Mask Failed.", 4);
+	wait_mask = old_mask;
+	sigdelset(&wait_mask, SIGUSR2);
 	sigemptyset(&sigact.sa_mask);
 	sigact.sa_flags = 0;
 	sigact.sa_handler = ack_handler;
-	if (sigaction(SIGUSR1, &sigact, NULL) == -1)
+	if (sigaction(SIGUSR1, &sigact, NULL) == -1
+		|| sigaction(SIGUSR2, &sigact, NULL) == -1)
 		ft_error("Error: Sigaction Failed.", 4);
-	send_msg(server_pid, argv[2]);
+	send_msg(server_pid, argv[2], &wait_mask);
+	if (sigprocmask(SIG_SETMASK, &old_mask, NULL) == -1)
+		ft_error("Error: Signal Mask Failed.", 4);
 	while (!g_clt.ack_received)
 		pause();
 	ft_printf("Message delivered to server.\n");
