@@ -1,5 +1,9 @@
 # minitalk
 
+[![CI](https://github.com/LuisQAlmeida/42minitalk/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/LuisQAlmeida/42minitalk/actions/workflows/ci.yml)
+
+> Part of my [42 Common Core portfolio](https://github.com/LuisQAlmeida/42Portfolio).
+
 ## Description
 
 **minitalk** is a small client–server communication project that uses only **UNIX signals** (`SIGUSR1` and `SIGUSR2`) to transfer data between processes.
