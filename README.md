@@ -279,6 +279,98 @@ root with:
     ./tests/regression.sh
 
 
+## Doxygen Documentation
+
+The mandatory and bonus Minitalk builds expose closely related interfaces, but
+they are alternative build variants rather than one combined C interface.
+
+Both variants reuse the names `t_server` and `t_client`. The bonus
+`t_client` additionally contains `ack_received`, so combining both headers in a
+single Doxygen corpus would merge distinct type definitions and could make the
+mandatory interface appear to expose bonus-only state.
+
+For that reason, generated API documentation is intentionally separated by
+build variant.
+
+### Mandatory interface
+
+The mandatory interface is documented from:
+
+- `minitalk/include/minitalk.h`.
+
+Generate it with:
+
+```sh
+doxygen Doxyfile
+```
+
+Generated HTML is written to:
+
+```text
+docs/mandatory/
+```
+
+Its entry point is:
+
+```text
+docs/mandatory/index.html
+```
+
+### Bonus interface
+
+The bonus interface is documented from:
+
+- `minitalk/include/minitalk_bonus.h`.
+
+Generate it with:
+
+```sh
+doxygen Doxyfile.bonus
+```
+
+Generated HTML is written to:
+
+```text
+docs/bonus/
+```
+
+Its entry point is:
+
+```text
+docs/bonus/index.html
+```
+
+The documentation describes:
+
+- server-side bit reconstruction state;
+- signal values captured by server handlers;
+- client PID propagation from `siginfo_t`;
+- handler-to-main-loop readiness signalling;
+- per-bit SIGUSR2 acknowledgement state;
+- `volatile sig_atomic_t` state shared with signal handlers;
+- fatal error reporting through `ft_error()`.
+
+The bonus documentation additionally describes `ack_received`, which records
+the final SIGUSR1 acknowledgement sent after the terminating null byte
+completes message delivery.
+
+Install Doxygen on Ubuntu if required:
+
+```sh
+sudo apt install doxygen
+```
+
+Generated HTML is intentionally ignored by Git. `Doxyfile` and
+`Doxyfile.bonus` are maintained as repository-controlled documentation
+contracts.
+
+Doxygen warnings are treated as validation failures. The dedicated
+documentation CI job generates and validates both interface variants
+independently, removes generated output, and verifies repository and pinned
+Libft-submodule cleanliness.
+
+---
+
 ## Resources
 
 ### Documentation & references
