@@ -94,3 +94,7 @@ dkms.conf
 # Minitalk generated executables
 /minitalk/server
 /minitalk/client
+
+# Doxygen generated documentation
+/docs/mandatory/
+/docs/bonus/
