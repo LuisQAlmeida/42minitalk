@@ -36,9 +36,10 @@ The dependency is stored as a Git submodule at:
 
     external/libft
 
-Minitalk is pinned to the exact Libft revision:
+Minitalk is pinned to the maintained `42Libft v1.0.0` release at the exact
+revision:
 
-    890089c0d12a29874e3a92facd92f9f455d1ff1c
+    0227823923ca15b580a481c3fb929d7f1382f545
 
 This means a given Minitalk commit resolves to a specific Libft source state
 rather than implicitly following the latest remote `main` branch.
