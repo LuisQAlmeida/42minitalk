@@ -19,6 +19,7 @@
 - [AI Usage](#ai-usage)
 
 ## Overview
+
 The goal of the project is to:
 
 - Implement a **server** that receives a string sent by a **client**.
