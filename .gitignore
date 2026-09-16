@@ -89,11 +89,11 @@ Mkfile.old
 dkms.conf
 
 # Project-local build state
-/minitalk/.build-state/
+/.build-state/
 
 # Minitalk generated executables
-/minitalk/server
-/minitalk/client
+/server
+/client
 
 # Doxygen generated documentation
 /docs/mandatory/

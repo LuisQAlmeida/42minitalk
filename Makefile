@@ -35,7 +35,7 @@ CLIENT_OBJ_USED = $(CLIENT_SRC_USED:.c=.o)
 SERVER_OBJ_ALL = $(SERVER_SRC:.c=.o) $(SERVER_SRC_BONUS:.c=.o)
 CLIENT_OBJ_ALL = $(CLIENT_SRC:.c=.o) $(CLIENT_SRC_BONUS:.c=.o)
 
-LIBFT_REPO_DIR = ../external/libft
+LIBFT_REPO_DIR = external/libft
 LIBFT_DIR = $(LIBFT_REPO_DIR)/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 

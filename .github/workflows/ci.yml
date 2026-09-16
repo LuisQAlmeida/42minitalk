@@ -38,7 +38,7 @@ jobs:
           test "$expected" = "$actual"
           test -f external/libft/libft/Makefile
           test -f external/libft/libft/libft.h
-          test ! -d minitalk/libft
+          test ! -d libft
 
       - name: Check patch whitespace
         run: git diff --check
@@ -47,49 +47,49 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          make -C minitalk fclean
-          make -C minitalk
+          make fclean
+          make
 
       - name: Bonus clean build
         shell: bash
         run: |
           set -euo pipefail
-          make -C minitalk fclean
-          make -C minitalk bonus
+          make fclean
+          make bonus
 
       - name: Validate mandatory to bonus switching
         shell: bash
         run: |
           set -euo pipefail
-          make -C minitalk fclean
-          make -C minitalk
-          make -C minitalk bonus
-          test -f minitalk/.build-state/bonus
-          test ! -f minitalk/.build-state/mandatory
+          make fclean
+          make
+          make bonus
+          test -f .build-state/bonus
+          test ! -f .build-state/mandatory
 
       - name: Validate bonus to mandatory switching
         shell: bash
         run: |
           set -euo pipefail
-          make -C minitalk fclean
-          make -C minitalk bonus
-          make -C minitalk
-          test -f minitalk/.build-state/mandatory
-          test ! -f minitalk/.build-state/bonus
+          make fclean
+          make bonus
+          make
+          test -f .build-state/mandatory
+          test ! -f .build-state/bonus
 
       - name: Validate clean then build
         shell: bash
         run: |
           set -euo pipefail
-          make -C minitalk clean
-          make -C minitalk
+          make clean
+          make
 
       - name: Validate fclean then re
         shell: bash
         run: |
           set -euo pipefail
-          make -C minitalk fclean
-          make -C minitalk re
+          make fclean
+          make re
 
       - name: Verify repository cleanliness after build
         shell: bash
@@ -112,7 +112,7 @@ jobs:
           fi
 
       - name: Clean generated artifacts
-        run: make -C minitalk fclean
+        run: make fclean
 
       - name: Verify repository cleanliness after fclean
         shell: bash
@@ -135,18 +135,18 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          make -C minitalk fclean
-          make -C minitalk CC=clang
+          make fclean
+          make CC=clang
 
       - name: Bonus Clang build
         shell: bash
         run: |
           set -euo pipefail
-          make -C minitalk fclean
-          make -C minitalk CC=clang bonus
+          make fclean
+          make CC=clang bonus
 
       - name: Clean
-        run: make -C minitalk fclean
+        run: make fclean
 
   runtime:
     name: Runtime regression validation
