@@ -86,21 +86,26 @@ not rewrite the historical submission.
 
 ```text
 42minitalk/
-├── .gitmodules
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+├── bonus/
+│   ├── client_bonus.c
+│   └── server_bonus.c
 ├── external/
-│   └── libft/                  # Pinned 42Libft Git submodule
-├── minitalk/
-│   ├── Makefile
-│   ├── include/
-│   │   ├── minitalk.h          # Mandatory header
-│   │   └── minitalk_bonus.h    # Bonus header
-│   ├── src/
-│   │   ├── client.c            # Mandatory client
-│   │   ├── server.c            # Mandatory server
-│   │   └── utils.c             # Error handling
-│   └── bonus/
-│       ├── client_bonus.c      # Bonus client
-│       └── server_bonus.c      # Bonus server with delivery ACK
+│   └── libft/
+├── include/
+│   ├── minitalk.h
+│   └── minitalk_bonus.h
+├── src/
+│   ├── client.c
+│   ├── server.c
+│   └── utils.c
+├── tests/
+│   └── regression.sh
+├── Doxyfile
+├── Doxyfile.bonus
+├── Makefile
 └── README.md
 ```
 
@@ -111,7 +116,7 @@ Libft is maintained separately and consumed through the pinned
 
 ### 2. Compilation
 
-From inside the `minitalk/` directory:
+From the repository root:
 
 #### Mandatory part
 
@@ -122,7 +127,7 @@ make
 This will:
 
 - validate that the pinned Libft submodule is initialized;
-- build Libft through its own Makefile under `../external/libft/libft`;
+- build Libft through its own Makefile under `external/libft/libft`;
 - compile and link:
   - `src/server.c` + `src/utils.c` + `libft.a` → `server`;
   - `src/client.c` + `src/utils.c` + `libft.a` → `client`.
@@ -256,7 +261,7 @@ The workflow validates three areas:
 - **Build and repository validation**
   - initializes Git submodules recursively;
   - verifies that Libft resolves to the revision recorded by this repository;
-  - verifies that the historical bundled `minitalk/libft/` directory is absent;
+  - verifies that no project-local `libft/` directory is present;
   - builds mandatory and bonus variants;
   - validates mandatory-to-bonus and bonus-to-mandatory switching;
   - validates `clean`, `fclean`, and `re`;
@@ -301,7 +306,7 @@ build variant.
 
 The mandatory interface is documented from:
 
-- `minitalk/include/minitalk.h`.
+- `include/minitalk.h`.
 
 Generate it with:
 
@@ -325,7 +330,7 @@ docs/mandatory/index.html
 
 The bonus interface is documented from:
 
-- `minitalk/include/minitalk_bonus.h`.
+- `include/minitalk_bonus.h`.
 
 Generate it with:
 

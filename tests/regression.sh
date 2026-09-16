@@ -4,7 +4,7 @@ set -u
 set -o pipefail
 
 ROOT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
-BUILD_DIR="$ROOT_DIR/minitalk"
+BUILD_DIR="$ROOT_DIR"
 TMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/42minitalk-regression.XXXXXX")
 
 SERVER_PID=""
