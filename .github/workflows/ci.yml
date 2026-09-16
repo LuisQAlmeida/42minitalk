@@ -192,7 +192,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          rm -rf docs
+          rm -rf docs/mandatory docs/bonus
 
           doxygen Doxyfile
           doxygen Doxyfile.bonus
@@ -235,9 +235,12 @@ jobs:
             fi
           done
 
-          rm -rf docs
+          rm -rf docs/mandatory docs/bonus
 
-          test ! -e docs
+          test ! -e docs/mandatory
+          test ! -e docs/bonus
+          test -f docs/academic/README.md
+          test -f docs/assets/42-evaluation.png
 
       - name: Verify repository cleanliness
         shell: bash

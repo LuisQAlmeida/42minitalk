@@ -4,6 +4,18 @@
 
 > Part of my [42 Common Core portfolio](https://github.com/LuisQAlmeida/42Portfolio).
 
+> **42 Common Core:** 125/100 · Subject v5.0 · [Academic record & evaluation](docs/academic/README.md)
+
+## Table of Contents
+
+- [Description](#description)
+- [Dependency Management](#dependency-management)
+- [Instructions](#instructions)
+- [Continuous Integration](#continuous-integration)
+- [Doxygen Documentation](#doxygen-documentation)
+- [Resources](#resources)
+- [AI Usage](#ai-usage)
+
 ## Description
 
 **minitalk** is a small client–server communication project that uses only **UNIX signals** (`SIGUSR1` and `SIGUSR2`) to transfer data between processes.
@@ -389,7 +401,7 @@ Libft-submodule cleanliness.
 - `man 2 sigaction` – examine and change a signal action.
 - `man 7 signal` – overview of signals.
 - `man 2 sigsuspend` – atomically wait for a signal with a temporary mask.
-- 42 subject PDF for **minitalk**.
+- 42 **minitalk** subject reference, Version 5.0 (documentary reference; PDF not redistributed here).
 - 42 **libft** project subject for the custom library used in this project.
 
 These references cover:
@@ -399,29 +411,48 @@ These references cover:
 - How to use `sigsuspend()` for race-safe signal waiting with controlled signal masks.
 - How to implement and reuse your own C library (`libft`).
 
-### Use of AI in this project
+## AI Usage
 
-AI tools, primarily ChatGPT from OpenAI, were used as supporting tools during
-both the original learning process and the later portfolio-maintenance phase.
+AI assistance had two distinct roles in this repository: support during the
+original academic learning process and broader engineering assistance during
+the later portfolio-modernization phase.
 
-During the project and its documentation, AI assistance included:
+### Academic development
 
-- concept clarification around UNIX signals, `sigaction`, `siginfo_t`,
-  signal masks, and synchronization;
-- architecture and implementation review;
-- README organization and technical documentation.
+During the original project, AI was used as a supporting learning and review
+tool for:
 
-During post-baseline portfolio maintenance, AI assistance also included:
+- understanding concepts related to UNIX signals and inter-process
+  communication;
+- designing and reviewing tests;
+- reasoning about expected behaviour and edge cases; and
+- receiving some architecture-level guidance.
 
-- reviewing synchronization and build-system behavior;
-- proposing dependency-management changes;
-- drafting regression-test and CI infrastructure;
-- drafting shell commands and audit procedures;
-- reviewing and updating documentation and release material.
+The original project implementation remained the student's own development
+work. AI was used to support understanding, reasoning, and review rather than
+to replace ownership of the implementation.
 
-All AI-assisted changes were reviewed, executed, tested, and accepted by the
-repository maintainer before integration.
+### Portfolio modernization
 
-The original pre-modernization repository state is preserved independently at
-`portfolio-baseline-2026-09`, while subsequent Git history records the
-maintained changes separately.
+AI assistance was used more extensively during the later maintained-portfolio
+work for:
+
+- repository and code audits;
+- maintainability review;
+- regression-test design;
+- CI and GitHub workflow support;
+- dependency modernization;
+- documentation work;
+- validation procedures; and
+- cross-repository consistency review.
+
+AI-assisted maintenance proposals were reviewed, executed, tested, and
+accepted by the repository maintainer before integration.
+
+The distinction between the original academic work and later maintenance is
+preserved through normal Git history and the immutable
+`portfolio-baseline-2026-09` tag.
+
+Detailed academic provenance, subject-version context, evaluation evidence,
+and maintained bonus-validation notes are recorded in
+[`docs/academic/README.md`](docs/academic/README.md).
