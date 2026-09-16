@@ -192,7 +192,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          rm -rf docs
+          rm -rf docs/mandatory docs/bonus
 
           doxygen Doxyfile
           doxygen Doxyfile.bonus
@@ -235,7 +235,7 @@ jobs:
             fi
           done
 
-          rm -rf docs
+          rm -rf docs/mandatory docs/bonus
 
           test ! -e docs
 
