@@ -4,11 +4,13 @@
 
 > Part of my [42 Common Core portfolio](https://github.com/LuisQAlmeida/42Portfolio).
 
+**minitalk** is a small client–server communication project that uses only **UNIX signals** (`SIGUSR1` and `SIGUSR2`) to transfer data between processes.
+
 > **42 Common Core:** 125/100 · Subject v5.0 · [Academic record & evaluation](docs/academic/README.md)
 
 ## Table of Contents
 
-- [Description](#description)
+- [Overview](#overview)
 - [Dependency Management](#dependency-management)
 - [Instructions](#instructions)
 - [Continuous Integration](#continuous-integration)
@@ -16,10 +18,7 @@
 - [Resources](#resources)
 - [AI Usage](#ai-usage)
 
-## Description
-
-**minitalk** is a small client–server communication project that uses only **UNIX signals** (`SIGUSR1` and `SIGUSR2`) to transfer data between processes.
-
+## Overview
 The goal of the project is to:
 
 - Implement a **server** that receives a string sent by a **client**.
